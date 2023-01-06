@@ -94,6 +94,21 @@ npx @rnx-kit/rn-changelog-generator --base v0.68.2 --compare v0.69.0-rc.0 \
 
 Create a pull request of this change to `react-native` repo and add the `Changelog` label.
 
+#### Manually Adjust the Changelog
+
+At the end of the generated Changelog, there could be two additional sections: the **Failed to Parse** section and the **Uknown** section.
+
+The **Failed to Parse** section contains commits that has a `## Changelog:` entry in their summary but, due to typos or other problems, the tool was not able to parse and automatically attribute them to the right section.
+
+The **Unknown** section is populated with commit that landed without the `## Changelog:` entry in the summary.
+
+For both these categories, we have to manually go through the listed commits and move them to the right section, based on the actual change they introduce. The following are a set of heuristic we follow to manually update the changelog:
+
+- Commit of internal changes can be **deleted** from the Changelog.
+  - Examples: commit on BUCK files or code refactoring that do not change behaviours or interfaces
+- Commit which bumps depemendencies should be **moved to the `Changed`** section
+  - For each dependency, there should be a single entry with the most recent bump. Commits that bumps the dependencies to lower versions can be **removed**
+
 ### 5. Create a GitHub Release
 
 - Create a [GitHub Release](https://github.com/facebook/react-native/releases) with this template and **check "Pre-Release" checkbox**.
